@@ -29,6 +29,7 @@ def handle_request(data: dict) -> None:
     user_name = data['ProfileName']
     sms_sid = data['SmsSid']
     user = get_user(sender_id)
+    print(user)
     '''We check using Twilio APIs that the incoming message is from Twilio
     '''
     retrieved_sms_sid = get_recent_message_sid(from_=sender_id)
@@ -78,6 +79,7 @@ def handle_twilio_webhook():
     try:
         print('A new twilio request...')
         data = request.form.to_dict()
+        print(data)
         # Create a new thread to handle the time consuming request
         threading.Thread(
             target=handle_request,
