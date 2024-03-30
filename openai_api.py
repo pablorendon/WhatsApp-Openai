@@ -13,7 +13,7 @@ client = OpenAI(
 
 def chat_completion(messages: list[dict[str, str]]) -> str:
     response = client.chat.completions.create(
-        model="gpt-3.5-turbo-0125",
+        model=config.GPT_MODEL,
         messages=messages,
         tools=tools,
         tool_choice="auto"
@@ -36,7 +36,7 @@ def chat_completion(messages: list[dict[str, str]]) -> str:
                 }
             )
         second_response = client.chat.completions.create(
-            model="gpt-3.5-turbo-0125",
+            model=config.GPT_MODEL,
             messages=messages,
         )
         return second_response.choices[0].message.content
