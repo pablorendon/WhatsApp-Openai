@@ -46,9 +46,9 @@ def handle_request(data: dict) -> None:
 
 
 data = {
-    "From": "whatsapp:+919558515995",
+    "From": "whatsapp:+13057533151",
     "Body": "",
-    "ProfileName": "User name"
+    "ProfileName": "Pablo Rendon" #User Name
 }
 
 while True:
