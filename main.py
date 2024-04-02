@@ -1,4 +1,3 @@
-from twilio.rest import Client
 from datetime import datetime
 import threading
 
@@ -11,11 +10,6 @@ from twilio_api import send_message, get_recent_message_sid
 import config
 
 app = Flask(__name__)
-
-
-account_sid = config.TWILIO_SID
-auth_token = config.TWILIO_TOKEN
-client = Client(account_sid, auth_token)
 
 
 @app.route('/', methods=['GET', 'POST'])
