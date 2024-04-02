@@ -16,4 +16,4 @@ DATABASE_NAME = os.getenv('DATABASE_NAME')
 COLLECTION_NAME = os.getenv('COLLECTION_NAME')
 
 ERROR_MESSAGE = 'We are facing an issue, please try after sometimes.'
-MESSAGE_FOR_INVALID_NUMBER = 'Sorry, you can not talk to this bot.'
+MESSAGE_FOR_INVALID_NUMBER = 'Sorry, you can not talk to this bot. Ask admin to add you as a User.'
