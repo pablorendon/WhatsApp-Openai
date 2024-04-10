@@ -17,6 +17,7 @@ def chat_completion(messages: list[dict[str, str]]) -> str:
         messages=messages,
         tools=tools,
         tool_choice="auto"
+        #max_tokens=100000  # Adjust this value as needed
     )
     response_message = response.choices[0].message
     tool_calls = response_message.tool_calls
@@ -25,14 +26,23 @@ def chat_completion(messages: list[dict[str, str]]) -> str:
         for tool_call in tool_calls:
             function_name = tool_call.function.name
             function_to_call = available_functions[function_name]
-            function_args = json.loads(tool_call.function.arguments)
-            function_response = function_to_call(function_args)
+            # Check if arguments are provided
+            if tool_call.function.arguments:  # Assuming this checks for non-empty argument string
+                function_args = json.loads(tool_call.function.arguments)
+                # Ensure function_args is not empty; call function with or without args accordingly
+                if function_args:
+                    function_response = function_to_call(function_args)
+                else:
+                    function_response = function_to_call()
+            else:
+                # No arguments provided, call the function without arguments
+                function_response = function_to_call()
             messages.append(
                 {
                     "tool_call_id": tool_call.id,
                     "role": "tool",
                     "name": function_name,
-                    "content": function_response,
+                    "content": str(function_response),
                 }
             )
         second_response = client.chat.completions.create(

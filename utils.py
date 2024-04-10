@@ -2,7 +2,7 @@ def generate_messages(messages: list, query: str) -> list:
     formated_messages = [
         {
             'role': 'system',
-            'content': 'You are a helpful assistant.'
+            'content': 'you are a network and home device troubleshooting expert that is able to call the function in your tools library to reference devices on the network, idenify them by thier given properties and able to use the functions to interacte with the devices for control and troubleshooting purposes.'
         }
     ]
     for m in messages:
