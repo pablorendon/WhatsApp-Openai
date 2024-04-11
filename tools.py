@@ -25,7 +25,7 @@ tools = [
                         },
                         "port_number": {
                             "type": "string",
-                            "description": "the outlet number on the panamax power supply device that the device the user wished to power cycle is on",
+                            "description": "the port_number on the ubiquiti switch that the device the user wished to power cycle is on",
                         }
                     },
                     "required": ["switch_mac_address","port_number"],
@@ -52,67 +52,33 @@ tools = [
     {
         "type": "function",
         "function": {
-                "name": "power_cycle_bluebolt",
-                "description": "power cycles specific outlets or bank for a given ip address pertaining to a panamax power supply device on the network",
+                "name": "bluebolt_manager",
+                "description": "This function can perform multiple processes on Panamax Bluebolt devices in the network.  It can get the status of the device using the 'sendstatus' command, it can turn specific outlets or banks ON or OFF for a given ip and mac address pertaining to a panamax power supply device on the network by using the 'switch' command, it can power cycle a given outlet_number also. The function should return the outcome of the command and that is what you should report back with. Do not assume an outcome of a command.",
                 "parameters": {
                     "type": "object",
                     "properties": {
                         "ip_address": {
                             "type": "string",
-                            "description": "The ip address of the power supply device that the user is refering to",
+                            "description": "The ip address of the power supply device that the user is refering to, this is required. Do not assume the ip_address.",
                         },
-                        "outlet": {
+                        "mac_address": {
                             "type": "string",
-                            "description": "the outlet number on the panamax power supply device that the device the user wished to power cycle is on",
+                            "description": "The mac address of the power supply device that the user is refering to, this is required. Do not assume the mac_address.",
                         },
-                        "delay": {
-                            "type": "string",
-                            "description": "the amount of time in second for the power cycle to last, default value is 5 seconds",
-                        }
-                    },
-                    "required": ["ip_address","outlet"],
-                },
-        },
-    },
-    {
-        "type": "function",
-        "function": {
-                "name": "switch_on_off_bluebolt",
-                "description": "Turn specific outlets or banks ON or OFF for a given ip address pertaining to a panamax power supply device on the network",
-                "parameters": {
-                    "type": "object",
-                    "properties": {
-                        "ip_address": {
-                            "type": "string",
-                            "description": "The ip address of the power supply device that the user is refering to",
+                        "command": {
+                            "type": "string", "enum": ["sendstatus", "cycleoutlet","switch"],
+                            "description": "the three commands this function takes are 'sendstatus' where the status of the device is returned, 'cycleoutlet' where a specified outlet_number is power cycled, 'switch' where a specified outlet_number is either turned 'ON' or 'OFF'. A command is required.",
                         },
-                        "outlet": {
+                        "outlet_number": {
                             "type": "string",
-                            "description": "the outlet number on the panamax power supply device that the device the user wished to power cycle is on",
+                            "description": "the outlet_number on the panamax power supply device that the device the user wished to 'cycleoutlet' or 'switch'. This parameter can be blank for the 'sendstatus' command.",
                         },
                         "state": {
-                            "type": "string",
-                            "description": "the state that the user wants the outlet or bank to be in. Can only be in all caps as either 'ON' or 'OFF'.",
+                            "type": "string","enum": ["ON", "OFF"],
+                            "description": "the state that the user wants the outlet or bank to be in for the 'switch' command. Can only be in all caps as either 'ON' or 'OFF'. This parameter will not be used for the 'sendstatus' and 'cycleoutlet' commands.",
                         }
                     },
-                    "required": ["ip_address","outlet", "state"],
-                },
-        },
-    },
-    {
-        "type": "function",
-        "function": {
-                "name": "get_status_bluebolt",
-                "description": "gets the status of the outlest or banks in for a given panamax power supply device on the network",
-                "parameters": {
-                    "type": "object",
-                    "properties": {
-                        "ip_address": {
-                            "type": "string",
-                            "description": "The ip address of the described panamax device that the user wishes to check the outlet and bank status' for.",
-                        }
-                    },
-                    "required": ["ip_address"],
+                    "required": ["ip_address","mac_address", "command" "outlet_number", "state"],
                 },
         },
     },

@@ -106,53 +106,15 @@ def ping_device_on_local_network(function_args: dict) -> str:
         return {"error": f"Error making request to ping/status: {e}"}
 
 
-def power_cycle_bluebolt(function_args: dict) -> str:
-    ip_address = function_args.get('ip_address', 'None')
-    outlet = function_args.get('outlet', 'None')
-    delay = function_args.get('delay', '5')
-
-    # Define the endpoint URL
-    url = f"{LOCAL_SERVER_ROOT_URL}/bluebolt/cycle"
-
-    # Define the headers, including the API key
-    headers = {
-        "Content-Type": "application/json",
-        "x-api-key": LOCAL_SERVER_API_KEY
-    }
-
-    # Define the request body with the dynamic IP address
-    body = {
-        "ip_address": ip_address,
-        "outlet": outlet,
-        "delay": delay
-        }
-
-
-    try:
-        # Make the POST request with the specified headers and body
-        response = requests.post(url, headers=headers, json=body)
-        
-        # Check if the request was successful
-        if response.status_code == 200:
-            # Return the JSON response
-            return response.json()
-        else:
-            # Handle unsuccessful request appropriately
-            print(f"Failed. Status code: {response.status_code}")
-            return {"error": f"Failed to power cycle. Status code: {response.status_code}"}
-    except Exception as e:
-        # Handle request exception appropriately
-        print(f"Error making request to bluebolt/cycle: {e}")
-        return {"error": f"Error making request to bluebolt/cycle: {e}"}
-
-
-def switch_on_off_bluebolt(function_args: dict) -> str:
-    ip_address = function_args.get('ip_address', 'None')
-    outlet = function_args.get('outlet', 'None')
+def bluebolt_manager(function_args: dict) -> str:
+    ip_address = function_args.get('ip_address')
+    mac_address = function_args.get('mac_address')
+    command = function_args.get('command')
+    outlet_number = function_args.get('outlet_number', 'None')
     state = function_args.get('state', 'None')
 
     # Define the endpoint URL
-    url = f"{LOCAL_SERVER_ROOT_URL}/bluebolt/switch"
+    url = f"{LOCAL_SERVER_ROOT_URL}/bluebolt/manager"
 
     # Define the headers, including the API key
     headers = {
@@ -163,7 +125,9 @@ def switch_on_off_bluebolt(function_args: dict) -> str:
     # Define the request body with the dynamic IP address
     body = {
         "ip_address": ip_address,
-        "outlet": outlet,
+        "mac_address": mac_address,
+        "command": command,
+        "outlet_number": outlet_number,
         "state": state
         }
 
@@ -178,48 +142,12 @@ def switch_on_off_bluebolt(function_args: dict) -> str:
             return response.json()
         else:
             # Handle unsuccessful request appropriately
-            print(f"Failed to switch Outlet or Bank. Status code: {response.status_code}")
-            return {"error": f"Failed to switch Outlet or Bank. Status code: {response.status_code}"}
+            print(f"Failed to perform command. Status code: {response.status_code}")
+            return {"error": f"Failed to perform command. Status code: {response.status_code}"}
     except Exception as e:
         # Handle request exception appropriately
-        print(f"Error making request to bluebolt/switch: {e}")
-        return {"error": f"Error making request to bluebolt/switch: {e}"}
-
-
-def get_status_bluebolt(function_args: dict) -> str:
-    ip_address = function_args.get('ip_address', 'None')
-    
-    # Define the endpoint URL
-    url = f"{LOCAL_SERVER_ROOT_URL}bluebolt/switch/status"
-
-    # Define the headers, including the API key
-    headers = {
-        "Content-Type": "application/json",
-        "x-api-key": LOCAL_SERVER_API_KEY
-    }
-
-    # Define the request body with the dynamic IP address
-    body = {
-        "ip_address": ip_address
-    }
-
-    try:
-        # Make the POST request with the specified headers and body
-        response = requests.get(url, headers=headers, json=body)
-        
-        # Check if the request was successful
-        if response.status_code == 200:
-            # Return the JSON response
-            return response.json()
-        else:
-            # Handle unsuccessful request appropriately
-            print(f"Failed to get status. Status code: {response.status_code}")
-            return {"error": f"Failed to get switch status. Status code: {response.status_code}"}
-    except Exception as e:
-        # Handle request exception appropriately
-        print(f"Error making request to switch/status: {e}")
-        return {"error": f"Error making request to /switch/status: {e}"}
-
+        print(f"Error making request to /bluebolt/manager: {e}")
+        return {"error": f"Error making request to /bluebolt/manager: {e}"}
 
 
 def get_current_weather(function_args: dict) -> str:
@@ -256,9 +184,7 @@ available_functions = {
     "get_all_network_clients": get_all_network_clients,
     "power_cycle_port_ubiquiti": power_cycle_port_ubiquiti,
     "ping_device_on_local_network": ping_device_on_local_network,
-    "power_cycle_bluebolt": power_cycle_bluebolt,
-    "switch_on_off_bluebolt": switch_on_off_bluebolt,
-    "get_status_bluebolt": get_status_bluebolt,
+    "bluebolt_manager": bluebolt_manager,
     "get_current_weather": get_current_weather,
     "get_current_weather_for_ndays": get_current_weather_for_ndays
 }
