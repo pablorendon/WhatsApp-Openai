@@ -52,10 +52,10 @@ data = {
 }
 
 while True:
-    you = input('Enter your query -> ')
+    you = input('YOU: ')
     if you == 'exit':
         break
     data.update({'Body': you})
-    print(f'YOU: {you}')
+    #print(f'YOU: {you}')
     bot = handle_request(data)
-    print(f'BOT: {bot}')
+    print(f'PREFIX: {bot}')
