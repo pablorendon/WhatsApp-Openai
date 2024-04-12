@@ -1,27 +1,15 @@
 tools = [
     {
-    "type": "function",
-    "function": {
-        "name": "get_all_network_clients",
-        "description": "Fetches information about all devices connected to the Ubiquiti network in JSON format to be used to find and identify devices on the network, identify what port on what switch they are connected to, how they are getting power, either by POE or a power supply device that is also on the network like the Panamax brands. The pysical locations for the devices can be found in the name and note fields.",
-        "parameters": {
-            "type": "object",
-            "properties": {},
-            "required": []
-        }
-    }
-    },
-    {
         "type": "function",
         "function": {
                 "name": "power_cycle_port_ubiquiti",
-                "description": "power cycles a specific port for a given MAC address pertaining to a ubiquiti network switch on the network",
+                "description": "power cycles a specific port for a given switch_mac_address pertaining to a ubiquiti network switch on the network",
                 "parameters": {
                     "type": "object",
                     "properties": {
                         "switch_mac_address": {
                             "type": "string",
-                            "description": "The MAC address of the ubiquiti network switch the device is connected to (not the MAC address of a device) that the user is refering to",
+                            "description": "The switch_mac_address of the ubiquiti network switch the device is connected to. Not the mac_address of the actual device that the user is refering to",
                         },
                         "port_number": {
                             "type": "string",
@@ -123,3 +111,17 @@ tools = [
         },
     }
 ]
+
+
+"""{
+    "type": "function",
+    "function": {
+        "name": "get_all_network_clients",
+        "description": "Fetches information about all devices connected to the Ubiquiti network in JSON format to be used to find and identify devices on the network, identify what port on what switch they are connected to, how they are getting power, either by POE or a power supply device that is also on the network like the Panamax brands. The pysical locations for the devices can be found in the name and note fields.",
+        "parameters": {
+            "type": "object",
+            "properties": {},
+            "required": []
+        }
+    }
+    },"""
