@@ -27,10 +27,10 @@ def handle_request(data: dict) -> None:
     '''We check using Twilio APIs that the incoming message is from Twilio
     '''
     retrieved_sms_sid = get_recent_message_sid(from_=sender_id)
-    if retrieved_sms_sid != sms_sid:
-        print(config.MESSAGE_FOR_INVALID_NUMBER)
-        send_message(sender_id, config.MESSAGE_FOR_INVALID_NUMBER)
-    elif not user:
+    #if retrieved_sms_sid != sms_sid:
+        #print(config.MESSAGE_FOR_INVALID_NUMBER)
+        #send_message(sender_id, config.MESSAGE_FOR_INVALID_NUMBER)
+    if not user: #was elif
         print(config.MESSAGE_FOR_INVALID_NUMBER)
         send_message(sender_id, config.MESSAGE_FOR_INVALID_NUMBER)
     else:
