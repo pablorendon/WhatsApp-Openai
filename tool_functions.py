@@ -181,7 +181,7 @@ def get_current_weather_for_ndays(function_args: dict) -> str:
 
 
 available_functions = {
-    "get_all_network_clients": get_all_network_clients,
+    #"get_all_network_clients": get_all_network_clients,
     "power_cycle_port_ubiquiti": power_cycle_port_ubiquiti,
     "ping_device_on_local_network": ping_device_on_local_network,
     "bluebolt_manager": bluebolt_manager,
