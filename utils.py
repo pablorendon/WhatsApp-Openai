@@ -1,6 +1,6 @@
 from tool_functions import get_all_network_clients
 
-device_map = get_all_network_clients()
+device_map = str(get_all_network_clients())
 
 def generate_messages(messages: list, query: str) -> list:
     formated_messages = [
