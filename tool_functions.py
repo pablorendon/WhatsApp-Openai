@@ -150,6 +150,46 @@ def bluebolt_manager(function_args: dict) -> str:
         return {"error": f"Error making request to /bluebolt/manager: {e}"}
 
 
+def wattbox_manager(function_args: dict) -> str:
+    ip_address = function_args.get('ip_address')
+    command_type = function_args.get('command_type')
+    outlet_number = function_args.get('outlet_number', 'None')
+
+    # Define the endpoint URL
+    url = f"{LOCAL_SERVER_ROOT_URL}/wattbox/manager"
+
+    # Define the headers, including the API key
+    headers = {
+        "Content-Type": "application/json",
+        "x-api-key": LOCAL_SERVER_API_KEY
+    }
+
+    # Define the request body with the dynamic IP address
+    body = {
+        "ip_address": ip_address,
+        "command_type": command_type,
+        "outlet_number": outlet_number
+        }
+
+
+    try:
+        # Make the POST request with the specified headers and body
+        response = requests.post(url, headers=headers, json=body)
+        
+        # Check if the request was successful
+        if response.status_code == 200:
+            # Return the JSON response
+            return response.json()
+        else:
+            # Handle unsuccessful request appropriately
+            print(f"Failed to perform command. Status code: {response.status_code}")
+            return {"error": f"Failed to perform command. Status code: {response.status_code}"}
+    except Exception as e:
+        # Handle request exception appropriately
+        print(f"Error making request to /wattbox/manager: {e}")
+        return {"error": f"Error making request to /wattbox/manager: {e}"}
+
+
 def get_current_weather(function_args: dict) -> str:
     # Extracting information from the input dictionary
     location = function_args.get('location', 'Unknown location')
@@ -185,6 +225,7 @@ available_functions = {
     "power_cycle_port_ubiquiti": power_cycle_port_ubiquiti,
     "ping_device_on_local_network": ping_device_on_local_network,
     "bluebolt_manager": bluebolt_manager,
+    "wattbox_manager": wattbox_manager,
     "get_current_weather": get_current_weather,
     "get_current_weather_for_ndays": get_current_weather_for_ndays
 }
@@ -232,9 +273,17 @@ if __name__ == "__main__":
 
 
     #####Test power_cycle_bluebolt
-    test_args = {
+    '''test_args = {
         "switch_mac_address": "ac:8b:a9:48:f8:3f",  
         "port_number": "16"
     }
     result = power_cycle_port_ubiquiti(test_args)
+    print(result)'''
+
+    #####Test wattbox status
+    test_args = {
+        "ip_address": "192.168.100.180",
+        "command_type": "status"
+        }
+    result = wattbox_manager(test_args)
     print(result)

@@ -47,7 +47,7 @@ tools = [
                     "properties": {
                         "ip_address": {
                             "type": "string",
-                            "description": "The ip address of the power supply device that the user is refering to, this is required. Do not assume the ip_address.",
+                            "description": "The ip address of the bluebolt panamax power supply device that the user is refering to, this is required. Do not assume the ip_address.",
                         },
                         "mac_address": {
                             "type": "string",
@@ -59,7 +59,7 @@ tools = [
                         },
                         "outlet_number": {
                             "type": "string",
-                            "description": "the outlet_number on the panamax power supply device that the device the user wished to 'cycleoutlet' or 'switch'. This parameter can be blank for the 'sendstatus' command.",
+                            "description": "the outlet_number on the panamax power supply device that the user wishes to 'cycleoutlet' or 'switch'. This parameter can be blank for the 'sendstatus' command.",
                         },
                         "state": {
                             "type": "string","enum": ["ON", "OFF"],
@@ -67,6 +67,31 @@ tools = [
                         }
                     },
                     "required": ["ip_address","mac_address", "command" "outlet_number", "state"],
+                },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+                "name": "wattbox_manager",
+                "description": "This function can perform multiple processes on wattbox devices in the network.  It can get the status of the device using the 'command_type' of 'status', it can turn specific outlets ON or OFF for a given ip_address pertaining to a wattbox power supply device on the network by using the 'command_type' of 'on' or off', it can power cycle a given outlet_number by using the command_type 'power_reset'. Also, you can use 'outlet_number' '0' to run the command_types on all the outlets at the same time if needed. The function should return the outcome of the command and that is what you should report back with. Do not assume an outcome of a command.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "ip_address": {
+                            "type": "string",
+                            "description": "The ip address of the wattbox power supply device that the user is refering to, this is required. Do not assume the ip_address.",
+                        },
+                        "command_type": {
+                            "type": "string", "enum": ["status","off","on","power_reset"],
+                            "description": "the four commands this function takes are 'status' where the status of the device is returned, 'power_reset' where a specified outlet_number is power cycled, 'on' where a specified outlet_number is turned 'ON', 'off' where a specified outlet_number is turned 'OFF'. A command is required.",
+                        },
+                        "outlet_number": {
+                            "type": "string",
+                            "description": "the outlet_number on the wattbox power supply device that the user wishes to run the 'command_type' on. This parameter can be blank for the 'status' command_type. This parameter can be '0' to send the command to all the outlets if the user specifies it",
+                        }
+                    },
+                    "required": ["ip_address", "command_type"],
                 },
         },
     },
