@@ -43,7 +43,7 @@ def handle_request(data: dict) -> None:
             messages = generate_messages([], query)
         print(query)
         print(sender_id)
-        print(messages)
+        #print(messages)
         response = chat_completion(messages)
         print(response+" response here")
         send_message(sender_id, response)
