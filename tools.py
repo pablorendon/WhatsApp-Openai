@@ -1,17 +1,5 @@
 tools = [
     {
-    "type": "function",
-    "function": {
-        "name": "get_all_network_clients",
-        "description": "Fetches the device map for all devices connected to the network in JSON format to be used to find and identify devices on the network",
-        "parameters": {
-            "type": "object",
-            "properties": {},
-            "required": []
-        }
-    }
-    },
-    {
         "type": "function",
         "function": {
                 "name": "power_cycle_port_ubiquiti",
