@@ -45,7 +45,7 @@ def handle_request(data: dict) -> None:
         print(sender_id)
         print(messages)
         response = chat_completion(messages)
-        print(response)
+        print(response+" response here")
         send_message(sender_id, response)
         if user:
             update_messages(sender_id, query, response,
