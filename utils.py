@@ -41,4 +41,5 @@ def generate_messages(messages: list, query: str) -> list:
 
 
 if __name__ == '__main__':
-    print(system_prompt + map_description + device_map)
+    #print(system_prompt + map_description + device_map)
+    print("Hello123")
