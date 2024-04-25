@@ -38,6 +38,7 @@ def handle_request(data: dict) -> None:
         # create chat_history from the previous conversations
         if user:
             messages = generate_messages(user['messages'][-3:], query) #the -3 means get last 3 messages from the user list
+            print(messages)
         else:
             messages = generate_messages([], query)
         print(query)
