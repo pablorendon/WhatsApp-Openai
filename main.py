@@ -24,7 +24,7 @@ def handle_request(data: dict) -> None:
     sms_sid = data['SmsSid']
     user = get_user(sender_id)
     print("Above print user")
-    print(user)
+    #print(user)
     '''We check using Twilio APIs that the incoming message is from Twilio
     '''
     retrieved_sms_sid = get_recent_message_sid(from_=sender_id)
