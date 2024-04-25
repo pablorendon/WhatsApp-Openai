@@ -3,15 +3,7 @@ tools = [
     "type": "function",
     "function": {
         "name": "get_all_network_clients",
-        "description": """Fetches the device map for all devices connected to the network in JSON format to be used to find and identify devices on the network Here is a description of how to use the Device Map that you can access via your tools.
-                        "name": This field holds the descriptive name of the device, identifying the device model or type, and often specifies the physical location within a building or campus. For example, "Apple TV - Living Room" indicates the device is an Apple TV located in the living room.
-                        "mac": Represents the Media Access Control (MAC) address of the device, a unique identifier for network interfaces. The placeholder XX:XX:XX:XX:XX:XX is used here to represent the MAC address of the device.
-                        "ip": The Internet Protocol (IP) address assigned to the device for network communication. A placeholder like XXX.XXX.XXX.XXX is used to represent the local address the device uses.
-                        "hostname": Defines the hostname of the device, a label that identifies the device on a network. For example, "Samsung" suggests the device is identified by its brand name.
-                        "switch_mac": Denotes the MAC address of the network switch to which the device is connected. The placeholder XX:XX:XX:XX:XX:XX is used to trace the switch in the network topology This is the Mac address to be used when powercycling a PoE device.
-                        "switch_port": Indicates the port number on the switch that the device is connected to. A value such as XX represents the specific interface on the switch handling traffic for this device This is also used to powercycle a PoE device.
-                        "ap_mac": The MAC address of the Access Point the device connects to, if applicable. "Unknown" indicates no detectable wireless connection or a generic placeholder can be used.
-                        "note": Provides additional information about the device, particularly its power source and how to manage power cycling. This field includes information such as the device's connection its power source, for example, "Power Source: PoE"(in which case you would use the ubiquiti powercycle tool) or "Power Supply[ip_address xxx.xxx.xxx.xxx,  outlet_number x]", indicating how the device can be power cycled using the power supply management like bluebolt.""",
+        "description": "Fetches the device map for all devices connected to the network in JSON format to be used to find and identify devices on the network",
         "parameters": {
             "type": "object",
             "properties": {},
