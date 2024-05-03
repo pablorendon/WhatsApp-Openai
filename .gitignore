@@ -3,3 +3,5 @@ __pycache__/
 .env
 .env_zuma
 bluebolt_tool_json.py
+query_devices.py
+update_device_db.py
