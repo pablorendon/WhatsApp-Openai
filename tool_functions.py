@@ -191,7 +191,7 @@ def wattbox_manager(function_args: dict) -> str:
 
 
 def hydrawise(function_args: dict) -> str:
-    hours = function_args.get('hours', 'None')
+    hours = function_args.get('hours', '0')
     minutes = function_args.get('minutes', '3')
 
     # Define the endpoint URL
