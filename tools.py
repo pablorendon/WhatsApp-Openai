@@ -105,11 +105,13 @@ tools = [
                     "properties": {
                         "hours": {
                             "type": "string",
-                            "description": "The amount of hours to suspend the sprinkler / irrigation system specified by the user"
+                            "description": "The amount of hours to suspend the sprinkler / irrigation system specified by the user",
+                            "default": "0"
                         },
                         "minutes": {
                             "type": "string",
-                            "description": "The amount of minutes to suspend the sprinkler / irrigation system specified by the user. if no minutes are mentioned use the default of 3 minutes"
+                            "description": "The amount of minutes to suspend the sprinkler / irrigation system specified by the user. if no minutes are mentioned use the default of 3 minutes",
+                            "default": "3"
                         }
                     }
                 },
