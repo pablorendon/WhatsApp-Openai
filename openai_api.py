@@ -12,6 +12,7 @@ client = OpenAI(
 
 
 def chat_completion(messages: list[dict[str, str]]) -> str:
+    #print(messages)##################################
     response = client.chat.completions.create(
         model=config.GPT_MODEL,
         messages=messages,
@@ -19,10 +20,13 @@ def chat_completion(messages: list[dict[str, str]]) -> str:
         tool_choice="auto"
         #max_tokens=100000  # Adjust this value as needed
     )
+    #print(response)###############################
     response_message = response.choices[0].message
+    #print(response_message)##############################
     tool_calls = response_message.tool_calls
     if tool_calls:
-        messages.append(response_message)
+        messages.append(response_message)#WHY IS THIS HERE?????
+        #print(messages)#######################
         for tool_call in tool_calls:
             function_name = tool_call.function.name
             function_to_call = available_functions[function_name]
@@ -36,7 +40,9 @@ def chat_completion(messages: list[dict[str, str]]) -> str:
                     function_response = function_to_call()
             else:
                 # No arguments provided, call the function without arguments
+                
                 function_response = function_to_call()
+            #print(function_response)#####################
             messages.append(
                 {
                     "tool_call_id": tool_call.id,
@@ -45,6 +51,7 @@ def chat_completion(messages: list[dict[str, str]]) -> str:
                     "content": str(function_response),
                 }
             )
+        print(messages)###################
         second_response = client.chat.completions.create(
             model=config.GPT_MODEL,
             messages=messages,

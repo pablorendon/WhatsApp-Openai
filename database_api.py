@@ -82,3 +82,10 @@ def get_user(sender_id: str) -> Any:
     if not result:
         None
     return result
+
+
+if __name__ == '__main__':
+    
+    sender_id = "whatsapp:+13057533151"
+    usr = get_user(sender_id)
+    print(usr)

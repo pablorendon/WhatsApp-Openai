@@ -9,14 +9,14 @@ tools = [
                     "properties": {
                         "switch_mac_address": {
                             "type": "string",
-                            "description": "The switch_mac_address of the ubiquiti network switch the device is connected to. Not the mac_address of the actual device that the user is refering to",
+                            "description": "The switch_mac_address of the ubiquiti network switch the device is connected to. Not the mac_address of the actual device that the user is refering to"
                         },
                         "port_number": {
                             "type": "string",
-                            "description": "the port_number on the ubiquiti switch that the device the user wished to power cycle is on",
+                            "description": "the port_number on the ubiquiti switch that the device the user wished to power cycle is on"
                         }
                     },
-                    "required": ["switch_mac_address","port_number"],
+                    "required": ["switch_mac_address","port_number"]
                 },
         },
     },
@@ -30,10 +30,10 @@ tools = [
                     "properties": {
                         "ip_address": {
                             "type": "string",
-                            "description": "The ip address of the described device that the user wishes to ping",
+                            "description": "The ip address of the described device that the user wishes to ping"
                         }
                     },
-                    "required": ["ip_address"],
+                    "required": ["ip_address"]
                 },
         },
     },
@@ -47,26 +47,26 @@ tools = [
                     "properties": {
                         "ip_address": {
                             "type": "string",
-                            "description": "The ip address of the bluebolt panamax power supply device that the user is refering to, this is required. Do not assume the ip_address.",
+                            "description": "The ip address of the bluebolt panamax power supply device that the user is refering to, this is required. Do not assume the ip_address."
                         },
                         "mac_address": {
                             "type": "string",
-                            "description": "The mac address of the power supply device that the user is refering to, this is required. Do not assume the mac_address.",
+                            "description": "The mac address of the power supply device that the user is refering to, this is required. Do not assume the mac_address."
                         },
                         "command": {
                             "type": "string", "enum": ["sendstatus", "cycleoutlet","switch"],
-                            "description": "the three commands this function takes are 'sendstatus' where the status of the device is returned, 'cycleoutlet' where a specified outlet_number is power cycled, 'switch' where a specified outlet_number is either turned 'ON' or 'OFF'. A command is required.",
+                            "description": "the three commands this function takes are 'sendstatus' where the status of the device is returned, 'cycleoutlet' where a specified outlet_number is power cycled, 'switch' where a specified outlet_number is either turned 'ON' or 'OFF'. A command is required."
                         },
                         "outlet_number": {
                             "type": "string",
-                            "description": "the outlet_number on the panamax power supply device that the user wishes to 'cycleoutlet' or 'switch'. This parameter can be blank for the 'sendstatus' command.",
+                            "description": "the outlet_number on the panamax power supply device that the user wishes to 'cycleoutlet' or 'switch'. This parameter can be blank for the 'sendstatus' command."
                         },
                         "state": {
                             "type": "string","enum": ["ON", "OFF"],
-                            "description": "the state that the user wants the outlet or bank to be in for the 'switch' command. Can only be in all caps as either 'ON' or 'OFF'. This parameter will not be used for the 'sendstatus' and 'cycleoutlet' commands.",
+                            "description": "the state that the user wants the outlet or bank to be in for the 'switch' command. Can only be in all caps as either 'ON' or 'OFF'. This parameter will not be used for the 'sendstatus' and 'cycleoutlet' commands."
                         }
                     },
-                    "required": ["ip_address","mac_address", "command" "outlet_number", "state"],
+                    "required": ["ip_address","mac_address", "command", "outlet_number", "state"]
                 },
         },
     },
@@ -80,58 +80,38 @@ tools = [
                     "properties": {
                         "ip_address": {
                             "type": "string",
-                            "description": "The ip address of the wattbox power supply device that the user is refering to, this is required. Do not assume the ip_address.",
+                            "description": "The ip address of the wattbox power supply device that the user is refering to, this is required. Do not assume the ip_address."
                         },
                         "command_type": {
                             "type": "string", "enum": ["status","off","on","power_reset"],
-                            "description": "the four commands this function takes are 'status' where the status of the device is returned, 'power_reset' where a specified outlet_number is power cycled, 'on' where a specified outlet_number is turned 'ON', 'off' where a specified outlet_number is turned 'OFF'. A command is required.",
+                            "description": "the four commands this function takes are 'status' where the status of the device is returned, 'power_reset' where a specified outlet_number is power cycled, 'on' where a specified outlet_number is turned 'ON', 'off' where a specified outlet_number is turned 'OFF'. A command is required."
                         },
                         "outlet_number": {
                             "type": "string",
-                            "description": "the outlet_number on the wattbox power supply device that the user wishes to run the 'command_type' on. This parameter can be blank for the 'status' command_type. This parameter can be '0' to send the command to all the outlets if the user specifies it",
+                            "description": "the outlet_number on the wattbox power supply device that the user wishes to run the 'command_type' on. This parameter can be blank for the 'status' command_type. This parameter can be '0' to send the command to all the outlets if the user specifies it"
                         }
                     },
-                    "required": ["ip_address", "command_type"],
+                    "required": ["ip_address", "command_type"]
                 },
         },
     },
     {
         "type": "function",
         "function": {
-                "name": "get_current_weather",
-                "description": "Get the current weather in a given location",
+                "name": "hydrawise",
+                "description": "Suspends all sprinkler / irrigatin activity for the time given in hours and minutes. Use this tool when the user would like to turn the sprinklers / irrigation system off for a given time.  If no time is given use the default time is 3 minutes",
                 "parameters": {
                     "type": "object",
                     "properties": {
-                        "location": {
+                        "hours": {
                             "type": "string",
-                            "description": "The city and state, e.g. San Francisco, CA",
+                            "description": "The amount of hours to suspend the sprinkler / irrigation system specified by the user"
                         },
-                        "unit": {"type": "string", "enum": ["celsius", "fahrenheit"]},
-                    },
-                    "required": ["location"],
-                },
-        },
-    },
-    {
-        "type": "function",
-        "function": {
-                "name": "get_current_weather_for_ndays",
-                "description": "Get the current weather in a given location for n number of days.",
-                "parameters": {
-                    "type": "object",
-                    "properties": {
-                        "location": {
+                        "minutes": {
                             "type": "string",
-                            "description": "The city and state, e.g. San Francisco, CA",
-                        },
-                        "unit": {"type": "string", "enum": ["celsius", "fahrenheit"]},
-                        "n_days": {
-                            "type": "number",
-                            "description": "number of days to forecaste the weather, e.g. 5"
+                            "description": "The amount of minutes to suspend the sprinkler / irrigation system specified by the user. if no minutes are mentioned use the default of 3 minutes"
                         }
-                    },
-                    "required": ["location", "n_days"],
+                    }
                 },
         },
     }

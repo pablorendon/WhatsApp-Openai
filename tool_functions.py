@@ -190,6 +190,44 @@ def wattbox_manager(function_args: dict) -> str:
         return {"error": f"Error making request to /wattbox/manager: {e}"}
 
 
+def hydrawise(function_args: dict) -> str:
+    hours = function_args.get('hours', 'None')
+    minutes = function_args.get('minutes', '3')
+
+    # Define the endpoint URL
+    url = f"{LOCAL_SERVER_ROOT_URL}/hydrawise/suspendall"
+
+    # Define the headers, including the API key
+    headers = {
+        "Content-Type": "application/json",
+        "x-api-key": LOCAL_SERVER_API_KEY
+    }
+
+    # Define the request body with the dynamic IP address
+    body = {
+        "hours": hours,
+        "minutes": minutes
+        }
+
+
+    try:
+        # Make the POST request with the specified headers and body
+        response = requests.post(url, headers=headers, json=body)
+        
+        # Check if the request was successful
+        if response.status_code == 200:
+            # Return the JSON response
+            return response.json()
+        else:
+            # Handle unsuccessful request appropriately
+            print(f"Status code: {response.status_code}")
+            return {"error": f"Status code: {response.status_code}"}
+    except Exception as e:
+        # Handle request exception appropriately
+        print(f"Error making request to hydrawise/suspendall: {e}")
+        return {"error": f"Error making request to hydrawise/suspendall: {e}"}
+
+
 def get_current_weather(function_args: dict) -> str:
     # Extracting information from the input dictionary
     location = function_args.get('location', 'Unknown location')
@@ -220,14 +258,16 @@ def get_current_weather_for_ndays(function_args: dict) -> str:
     return response_message
 
 
+
+
+
 available_functions = {
     #"get_all_network_clients": get_all_network_clients,
     "power_cycle_port_ubiquiti": power_cycle_port_ubiquiti,
     "ping_device_on_local_network": ping_device_on_local_network,
     "bluebolt_manager": bluebolt_manager,
     "wattbox_manager": wattbox_manager,
-    "get_current_weather": get_current_weather,
-    "get_current_weather_for_ndays": get_current_weather_for_ndays
+    "hydrawise": hydrawise
 }
 
 
