@@ -25,7 +25,8 @@ def chat_completion(messages: list[dict[str, str]]) -> str:
     #print(response_message)##############################
     tool_calls = response_message.tool_calls
     if tool_calls:
-        messages.append(response_message)#WHY IS THIS HERE?????
+        second_messages = [] #Fresh message without the long device map, not needed for second request to openai
+        second_messages.append(response_message) #append the tools response . was just messages before
         #print(messages)#######################
         for tool_call in tool_calls:
             function_name = tool_call.function.name
@@ -43,7 +44,7 @@ def chat_completion(messages: list[dict[str, str]]) -> str:
                 
                 function_response = function_to_call()
             #print(function_response)#####################
-            messages.append(
+            second_messages.append( #append the tool and function response to the second message 
                 {
                     "tool_call_id": tool_call.id,
                     "role": "tool",
@@ -51,10 +52,10 @@ def chat_completion(messages: list[dict[str, str]]) -> str:
                     "content": str(function_response),
                 }
             )
-        print(messages)###################
+        print(second_messages)###################
         second_response = client.chat.completions.create(
             model=config.GPT_MODEL,
-            messages=messages,
+            messages=second_messages #send the new and much shorter second message TOKEN SAVINGS HERE
         )
         return second_response.choices[0].message.content
     else:

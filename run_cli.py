@@ -20,7 +20,9 @@ def handle_request(data: dict) -> None:
             messages = generate_messages(user['messages'][-3:], query)
         else:
             messages = generate_messages([], query)
+        
         response = chat_completion(messages)
+        
         if user:
             update_messages(sender_id, query, response,
                             user['messageCount'])

@@ -4,9 +4,39 @@ from config import LOCAL_SERVER_API_KEY, LOCAL_SERVER_ROOT_URL
 import json
 import requests
 
+
 def get_all_network_clients():
     # Define the endpoint URL
     url = f"{LOCAL_SERVER_ROOT_URL}/ubiquiti/devices"
+    
+    # Define the headers, including the API key
+    headers = {
+        "Content-Type": "application/json",
+        "x-api-key": LOCAL_SERVER_API_KEY
+    }
+    
+    try:
+        # Make the API request
+        response = requests.get(url, headers=headers)
+        
+        # Check if the request was successful
+        if response.status_code == 200:
+            # Serialize the JSON response into a string and remove all spaces
+            compact_json = json.dumps(response.json(), separators=(',', ':'))
+            return compact_json
+        else:
+            # Log or handle unsuccessful request appropriately
+            print(f"Failed to fetch devices. Status code: {response.status_code}")
+            return {"error": f"Failed to fetch devices. Status code: {response.status_code}"}
+    except Exception as e:
+        # Log or handle request exception appropriately
+        print(f"Error making request to ubiquiti/devices: {e}")
+        return {"error": f"Error making request to ubiquiti/devices: {e}"}
+
+
+def get_all_ubiquiti_devices():
+    # Define the endpoint URL
+    url = f"{LOCAL_SERVER_ROOT_URL}/ubiquiti/list_all_ubiquiti_devices"
     
     # Define the headers, including the API key
     headers = {
@@ -69,6 +99,82 @@ def power_cycle_port_ubiquiti(function_args: dict) -> str:
         # Handle request exception appropriately
         print(f"Error making request to ubiquiti/powercycle: {e}")
         return {"error": f"Error making request to ubiquiti/powercycle: {e}"}
+
+
+def usp_ubiquiti_manager(function_args: dict) -> str:
+    usp_mac_address = function_args.get('usp_mac_address')
+    action = function_args.get('action')
+    outlet_number = function_args.get('outlet_number')
+
+    # Define the endpoint URL
+    url = f"{LOCAL_SERVER_ROOT_URL}/ubiquiti/usppowercycle"
+
+    # Define the headers, including the API key
+    headers = {
+        "Content-Type": "application/json",
+        "x-api-key": LOCAL_SERVER_API_KEY
+    }
+
+    # Define the request body with the dynamic IP address
+    body = {
+        "usp_mac_address": usp_mac_address,
+        "action": action,
+        "outlet_number": outlet_number
+        }
+
+
+    try:
+        # Make the POST request with the specified headers and body
+        response = requests.post(url, headers=headers, json=body)
+        
+        # Check if the request was successful
+        if response.status_code == 200:
+            # Return the JSON response
+            return response.json()
+        else:
+            # Handle unsuccessful request appropriately
+            print(f"Failed to perform command. Status code: {response.status_code}")
+            return {"error": f"Failed to perform command. Status code: {response.status_code}"}
+    except Exception as e:
+        # Handle request exception appropriately
+        print(f"Error making request to /ubiquiti/usppowercycle: {e}")
+        return {"error": f"Error making request to /ubiquiti/usppowercycle: {e}"}
+
+
+def get_usp_ubiquiti_info(function_args: dict) -> str:
+    usp_mac_address = function_args.get('usp_mac_address')
+
+    # Define the endpoint URL
+    url = f"{LOCAL_SERVER_ROOT_URL}/ubiquiti/uspinfo"
+
+    # Define the headers, including the API key
+    headers = {
+        "Content-Type": "application/json",
+        "x-api-key": LOCAL_SERVER_API_KEY
+    }
+
+    # Define the request body with the dynamic IP address
+    body = {
+        "usp_mac_address": usp_mac_address
+        }
+
+
+    try:
+        # Make the POST request with the specified headers and body
+        response = requests.get(url, headers=headers, json=body)
+        
+        # Check if the request was successful
+        if response.status_code == 200:
+            # Return the JSON response
+            return response.json()
+        else:
+            # Handle unsuccessful request appropriately
+            print(f"Failed to perform command. Status code: {response.status_code}")
+            return {"error": f"Failed to perform command. Status code: {response.status_code}"}
+    except Exception as e:
+        # Handle request exception appropriately
+        print(f"Error making request to /ubiquiti/uspinfo: {e}")
+        return {"error": f"Error making request to /ubiquiti/uspinfo: {e}"}
 
 
 def ping_device_on_local_network(function_args: dict) -> str:
@@ -228,35 +334,6 @@ def hydrawise(function_args: dict) -> str:
         return {"error": f"Error making request to hydrawise/suspendall: {e}"}
 
 
-def get_current_weather(function_args: dict) -> str:
-    # Extracting information from the input dictionary
-    location = function_args.get('location', 'Unknown location')
-    unit = function_args.get('unit', 'celsius')
-    
-    # Generating a dummy temperature for demonstration
-    dummy_temperature = 25  # This can be adjusted or randomized as needed
-    
-    # Correcting the typo in 'city' and 'Ahmedabad', and making the response dynamic
-    response_message = f"The weather in {location} is currently {dummy_temperature} degrees {unit}."
-    
-    return response_message
-
-
-def get_current_weather_for_ndays(function_args: dict) -> str:
-    # Extracting information from the input dictionary
-    location = function_args.get('location', 'Unknown location')
-    n_days = function_args.get('n_days', 0)
-    unit = function_args.get('unit', 'celsius')
-    
-    # Generating a dummy temperature for demonstration
-    dummy_temperature = 69  # This can be randomized or adjusted as needed
-    
-    # Constructing a dynamic response message
-    response_message = (f"The weather in {location} for the upcoming {n_days} days will be approximately "
-                        f"{dummy_temperature} degrees {unit}.")
-    
-    return response_message
-
 
 
 
@@ -264,6 +341,8 @@ def get_current_weather_for_ndays(function_args: dict) -> str:
 available_functions = {
     #"get_all_network_clients": get_all_network_clients,
     "power_cycle_port_ubiquiti": power_cycle_port_ubiquiti,
+    "usp_ubiquiti_manager": usp_ubiquiti_manager,
+    "get_usp_ubiquiti_info": get_usp_ubiquiti_info,
     "ping_device_on_local_network": ping_device_on_local_network,
     "bluebolt_manager": bluebolt_manager,
     "wattbox_manager": wattbox_manager,
@@ -273,10 +352,14 @@ available_functions = {
 
 
 if __name__ == "__main__":
-    print(LOCAL_SERVER_API_KEY)
+    #print(LOCAL_SERVER_API_KEY)
     
     #####Test get_all_network_clients()
     #devices_info = get_all_network_clients()
+    #print(devices_info)
+
+    #####Test get_all_network_clients()
+    #devices_info = get_all_ubiquiti_devices()
     #print(devices_info)
 
     #####Test ping_device_on_local_network(ip)
@@ -321,9 +404,27 @@ if __name__ == "__main__":
     print(result)'''
 
     #####Test wattbox status
-    test_args = {
+    '''test_args = {
         "ip_address": "192.168.100.180",
         "command_type": "status"
         }
     result = wattbox_manager(test_args)
+    print(result)'''
+
+
+    #####Test ubiquiti_usp_manager
+    '''test_args = {
+        "usp_mac_address": "d8:b3:70:7e:08:53",
+        "outlet_number": "20",
+        "action": "cycle"
+        }
+    result = usp_ubiquiti_manager(test_args)
+    print(result)'''
+
+    #####Test get_usp_ubiquiti_info
+    test_args = {
+        "usp_mac_address": "d8:b3:70:7e:08:53"
+        }
+    result = get_usp_ubiquiti_info(test_args)
     print(result)
+

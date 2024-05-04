@@ -23,6 +23,48 @@ tools = [
     {
         "type": "function",
         "function": {
+                "name": "usp_ubiquiti_manager",
+                "description": "This function can perform multiple processes on ubiquiti USP PDU power supply devices in the network.  It can turn an outlet_number 'on' or 'off' and it can also power cycle an outlet_number.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "usp_mac_address": {
+                            "type": "string",
+                            "description": "The mac address of the ubiquiti USP power supply device that the device map is refering to, this is required. Do not assume the mac_address."
+                        },
+                        "action": {
+                            "type": "string", "enum": ["on", "off","cycle"],
+                            "description": "the three commands this function takes are 'on' where the outlet_numer is turned on, 'off' where the outlet_numer is turned off,'cycle' where a specified outlet_number is power cycled."
+                        },
+                        "outlet_number": {
+                            "type": "string",
+                            "description": "the outlet_number on the ubiquiti USP power supply device that the user wishes to 'cycle' or turn 'on' or 'off'."
+                        }
+                    },
+                    "required": ["usp_mac_address", "action", "outlet_number"]
+                },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+                "name": "get_usp_ubiquiti_info",
+                "description": "This function gets the information for all the outlets on the ubiquiti USP Power Suppy device.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "usp_mac_address": {
+                            "type": "string",
+                            "description": "The mac address of the ubiquiti USP power supply device that the device map is refering to, this is required. Do not assume the mac_address."
+                        }
+                    },
+                    "required": ["usp_mac_address"]
+                },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
                 "name": "ping_device_on_local_network",
                 "description": "pings a device on the network, get ip address by using the get_all_network_clients function if not directly given",
                 "parameters": {
