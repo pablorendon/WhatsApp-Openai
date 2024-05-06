@@ -3,17 +3,17 @@ tools = [
         "type": "function",
         "function": {
                 "name": "power_cycle_port_ubiquiti",
-                "description": "power cycles a specific port for a given switch_mac_address pertaining to a ubiquiti network switch on the network",
+                "description": "This funciton power cycles a specific port on a ubiquiti network switch that the described client device is connected to. The switch_mac_address and port number are referenced from the client device map information for the device the user is describing",
                 "parameters": {
                     "type": "object",
                     "properties": {
                         "switch_mac_address": {
                             "type": "string",
-                            "description": "The switch_mac_address of the ubiquiti network switch the device is connected to. Not the mac_address of the actual device that the user is refering to"
+                            "description": "The switch_mac_address of the ubiquiti network switch the client device is connected to. Not the mac_address of the actual client device that the user is refering to"
                         },
                         "port_number": {
                             "type": "string",
-                            "description": "the port_number on the ubiquiti switch that the device the user wished to power cycle is on"
+                            "description": "the port_number on the ubiquiti switch that the client device the user wishes to power cycle is on"
                         }
                     },
                     "required": ["switch_mac_address","port_number"]
@@ -24,7 +24,7 @@ tools = [
         "type": "function",
         "function": {
                 "name": "usp_ubiquiti_manager",
-                "description": "This function can perform multiple processes on ubiquiti USP PDU power supply devices in the network.  It can turn an outlet_number 'on' or 'off' and it can also power cycle an outlet_number.",
+                "description": "This function can perform multiple processes on ubiquiti USP PDU power supply devices on the network.  It can turn an outlet_number 'on' or 'off' and it can also power cycle an outlet_number.",
                 "parameters": {
                     "type": "object",
                     "properties": {
