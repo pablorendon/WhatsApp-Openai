@@ -26,8 +26,8 @@ def get_all_network_clients():
             return compact_json
         else:
             # Log or handle unsuccessful request appropriately
-            print(f"Failed to fetch devices. Status code: {response.status_code}")
-            return {"error": f"Failed to fetch devices. Status code: {response.status_code}"}
+            print(f"Failed to fetch client devices. Status code: {response.status_code}")
+            return {"error": f"Failed to fetch client devices. Status code: {response.status_code}"}
     except Exception as e:
         # Log or handle request exception appropriately
         print(f"Error making request to ubiquiti/devices: {e}")
@@ -55,8 +55,8 @@ def get_all_ubiquiti_devices():
             return compact_json
         else:
             # Log or handle unsuccessful request appropriately
-            print(f"Failed to fetch devices. Status code: {response.status_code}")
-            return {"error": f"Failed to fetch devices. Status code: {response.status_code}"}
+            print(f"Failed to fetch ubiquiti devices. Status code: {response.status_code}")
+            return {"error": f"Failed to fetch ubiquiti devices. Status code: {response.status_code}"}
     except Exception as e:
         # Log or handle request exception appropriately
         print(f"Error making request to ubiquiti/devices: {e}")
@@ -422,9 +422,9 @@ if __name__ == "__main__":
     print(result)'''
 
     #####Test get_usp_ubiquiti_info
-    test_args = {
+    '''test_args = {
         "usp_mac_address": "d8:b3:70:7e:08:53"
         }
     result = get_usp_ubiquiti_info(test_args)
-    print(result)
+    print(result)'''
 
