@@ -1,7 +1,7 @@
 import json
 
 from openai import OpenAI
-
+import tiktoken
 import config
 from tools import tools
 from tool_functions import *
@@ -12,7 +12,10 @@ client = OpenAI(
 
 
 def chat_completion(messages: list[dict[str, str]]) -> str:
+    
     #print(messages)##################################
+    print("Tokens uses for first request: " , num_tokens_from_string(str(messages), "cl100k_base"))
+    
     response = client.chat.completions.create(
         model=config.GPT_MODEL,
         messages=messages,
@@ -20,9 +23,11 @@ def chat_completion(messages: list[dict[str, str]]) -> str:
         tool_choice="auto"
         #max_tokens=100000  # Adjust this value as needed
     )
+    
     #print(response)###############################
     response_message = response.choices[0].message
     #print(response_message)##############################
+
     tool_calls = response_message.tool_calls
     if tool_calls:
         second_messages = [] #Fresh message without the long device map, not needed for second request to openai
@@ -52,7 +57,8 @@ def chat_completion(messages: list[dict[str, str]]) -> str:
                     "content": str(function_response),
                 }
             )
-        print(second_messages)###################
+        #print(second_messages)###################
+        print("Tokens uses for second request: " , num_tokens_from_string(str(second_messages), "cl100k_base"))
         second_response = client.chat.completions.create(
             model=config.GPT_MODEL,
             messages=second_messages #send the new and much shorter second message TOKEN SAVINGS HERE
@@ -60,3 +66,12 @@ def chat_completion(messages: list[dict[str, str]]) -> str:
         return second_response.choices[0].message.content
     else:
         return response_message.content
+
+
+
+
+def num_tokens_from_string(string: str, encoding_name: str) -> int:
+    """Returns the number of tokens in a text string."""
+    encoding = tiktoken.get_encoding(encoding_name)
+    num_tokens = len(encoding.encode(string))
+    return num_tokens
