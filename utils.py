@@ -1,12 +1,12 @@
 from tool_functions import get_all_network_clients, get_all_ubiquiti_devices
 
-client_device_map = str(get_all_network_clients())
-ubiquiti_device_map = str(get_all_ubiquiti_devices())
+#client_device_map = str(get_all_network_clients()) # not needed, being used inside generate_messages now
+#ubiquiti_device_map = str(get_all_ubiquiti_devices()) # not needed, being used inside generate_messages now
 
-system_prompt = 'You are a network and home device troubleshooting expert that is able to use the device map provided here to reference devices on the network, idenify them by thier given properties and able to use the functions in your tools to interacte with the devices for control and troubleshooting purposes. Do not assume or make up any information. You communicate via WhatsApp messaging so please be as as concise and to the point as possible. '
+system_prompt = 'You are a network and home device troubleshooting expert that is able to use the device map provided here to reference devices on the network, idenify them by thier given properties and able to use the functions in your tools to interact with the devices for control and troubleshooting purposes. Do not assume or make up any information and only use the device map information below to answer questions about devices. Do not rely on previous messages for device information. You communicate via WhatsApp messaging so please be as as concise and to the point as possible. '
 
 map_description = """
-Here is a description of how to use the all_client_devices Map that you can access via your tools.
+Here is a description of how to use the all_client_devices Map that you can access via your tools. Only use the following device map to reference device information.
 "name": This field holds the descriptive name of the device, identifying the device model or type, and often specifies the physical location within a building or campus. For example, "Apple TV - Living Room" indicates the device is an Apple TV located in the living room.
 "mac": Represents the Media Access Control (MAC) address of the device, a unique identifier for network interfaces. The placeholder XX:XX:XX:XX:XX:XX is used here to represent the MAC address of the device.
 "ip": The Internet Protocol (IP) address assigned to the device for network communication. A placeholder like XXX.XXX.XXX.XXX is used to represent the local address the device uses.
@@ -28,7 +28,7 @@ def generate_messages(messages: list, query: str) -> list:
     formated_messages = [
         {
             'role': 'system',
-            'content': system_prompt + map_description + client_device_map + ubiquiti_device_map
+            'content': system_prompt + map_description + str(get_all_network_clients()) + str(get_all_ubiquiti_devices()) + "this is the end of the device map.  DO NOT reference any device information from anything past this."
         }
     ]
     for m in messages:
