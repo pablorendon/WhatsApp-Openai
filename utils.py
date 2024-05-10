@@ -1,4 +1,5 @@
 from tool_functions import get_all_network_clients, get_all_ubiquiti_devices
+#from database_query_devices import find_client_device_fuzzy, find_ubiquiti_device_fuzzy #Not using this yet
 
 #client_device_map = str(get_all_network_clients()) # not needed, being used inside generate_messages now
 #ubiquiti_device_map = str(get_all_ubiquiti_devices()) # not needed, being used inside generate_messages now
@@ -7,7 +8,7 @@ system_prompt = 'You are a network and home device troubleshooting expert that i
 
 map_description = """
 Here is a description of how to use the all_client_devices Map that you can access via your tools. Only use the following device map to reference device information.
-"name": This field holds the descriptive name of the device, identifying the device model or type, and often specifies the physical location within a building or campus. For example, "Apple TV - Living Room" indicates the device is an Apple TV located in the living room.
+"name": This field contains a structured description of a device, consisting of three primary components separated by hyphens. The first component specifies the device type or model, such as 'Apple TV'. The second component identifies the building where the device is located, such as 'Main House'. The third component indicates the specific room within the building where the device is installed, such as 'Master Bedroom'. For example, 'Apple TV - Main House - Master Bedroom' denotes an Apple TV located in the master bedroom of the main house. This naming convention helps in easily identifying both the type and precise location of the device within a larger environment or facility.
 "mac": Represents the Media Access Control (MAC) address of the device, a unique identifier for network interfaces. The placeholder XX:XX:XX:XX:XX:XX is used here to represent the MAC address of the device.
 "ip": The Internet Protocol (IP) address assigned to the device for network communication. A placeholder like XXX.XXX.XXX.XXX is used to represent the local address the device uses.
 "_id": The ubiquiti id that is also used to identify devices on the network.
@@ -29,6 +30,7 @@ def generate_messages(messages: list, query: str) -> list:
         {
             'role': 'system',
             'content': system_prompt + map_description + str(get_all_network_clients()) + str(get_all_ubiquiti_devices()) + "this is the end of the device map.  DO NOT reference any device information from anything past this."
+            #'content': system_prompt + map_description + str(find_client_device_fuzzy(query)) + str(find_ubiquiti_device_fuzzy(query)) + "this is the end of the device map."
         }
     ]
     for m in messages:
@@ -51,4 +53,5 @@ def generate_messages(messages: list, query: str) -> list:
 
 if __name__ == '__main__':
     #print(system_prompt + map_description + device_map)
-    print("Hello123")
+    #print(client_device_map)
+    print("utils.py")

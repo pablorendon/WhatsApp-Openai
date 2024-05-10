@@ -34,6 +34,7 @@ def chat_completion(messages: list[dict[str, str]]) -> str:
         second_messages.append(response_message) #append the tools response . was just messages before
         #print(messages)#######################
         for tool_call in tool_calls:
+            print(tool_call)
             function_name = tool_call.function.name
             function_to_call = available_functions[function_name]
             # Check if arguments are provided
@@ -75,3 +76,8 @@ def num_tokens_from_string(string: str, encoding_name: str) -> int:
     encoding = tiktoken.get_encoding(encoding_name)
     num_tokens = len(encoding.encode(string))
     return num_tokens
+
+
+if __name__ == '__main__':
+    
+    print("openai_api.py")

@@ -3,6 +3,7 @@ from datetime import datetime
 from database_api import create_user, update_messages, get_user
 from utils import generate_messages
 from openai_api import chat_completion
+#from mistral_api import mistral_chat_completion
 from twilio_api import send_message
 import config
 

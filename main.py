@@ -110,3 +110,9 @@ def handle_create_user():
         return 'OK', 200
     except:
         return 'BAD REQUEST', 401
+
+
+
+if __name__ == '__main__':
+    
+    print("main.py")
